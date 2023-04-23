@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>JOMACS Releases Nexus Repository</name>
-	      <url>http://54.209.238.90/repository/rhk-release/</url>
+	      <url>http://54.209.238.90:8081/repository/rhk-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>JOMACS Snapshot Nexus Repository </name>
-	      <url>http://54.209.238.90/repository/rhk-snapshot/</url>
+	      <url>http://54.209.238.90:8081/repository/rhk-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
