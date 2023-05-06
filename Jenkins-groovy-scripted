@@ -1,0 +1,63 @@
+//Groovy Scripted
+//node("node1"){
+node(""){
+    def MHD = tool name: "maven3.8.8"
+    def maven = "${MHD}/bin/mvn"
+    
+    stage ("1. git clone source code from github"){
+        sh "echo cloning source code from SCM started"
+        git credentialsId: 'github', url: 'https://github.com/isaacsnipe/jomacs-webapps.git'
+        sh "echo cloning completed"
+    }
+    
+    stage ("2. clean and build artifact"){
+        sh "echo Cleaning and building artifact started"
+        sh "${maven} clean package"
+        sh "echo building artifact completed"
+    }
+    
+    stage ("3. scan and test artifact"){
+        sh "echo scanning and testing artifact started"
+        sh "${maven} sonar:sonar"
+        sh "echo scanning completed"
+    }
+    
+    stage ("4. store artifact"){
+        sh "echo storing artifact started"
+        sh "${maven} deploy"
+        sh "echo storing artifact completed"
+    }
+    
+    stage ("5. Deploy to UAT environment"){
+        sh "echo deploying to UAT env started"
+        deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://172.31.17.184:8080')], contextPath: null, war: 'target/*.war'
+        sh "echo deploying to UAT completed"
+    }
+    
+    stage ("6. Waiting for PM approval"){
+        sh "echo Require PM approval to deploy to Production"
+        timeout(time:3, unit:'DAYS'){
+            input message: "Approval to deploy to UAT granted"
+        }
+    }
+    
+    stage ("7. Deploy to Prod environment"){
+        sh "echo deploying to Prod env started"
+        deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://172.31.17.184:8080')], contextPath: null, war: 'target/*.war'
+        sh "echo deploying to Prod completed"
+    }
+    
+    stage ("8. Email Notification to devops team"){
+        sh "echo Sending mail to devops team on successful deploy to env"
+        emailext body: 'Artifact deployed to UAT environment', subject: 'artifact deployed to UAT', to: 'isaacsnipe@gmail.com'
+        sh "echo email sent successfully"
+    }
+    
+    stage ("9. Slack Notification"){
+        sh "echo Sending slack notification to team"
+        slackSend channel: '#ci-cd', message: 'Upload artifact to Prod Env Completed'
+        sh "echo Slack notification sent"
+    }
+    
+    
+}
