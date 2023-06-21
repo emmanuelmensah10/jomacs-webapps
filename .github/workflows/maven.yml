@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: deploy to tomcat
-      run: curl -v -u admin:admin123 -T /home/runner/work/jomacs-webapps/jomacs-webapps/target/web-app.war 'https://ec2-54-173-96-193.compute-1.amazonaws.com:8080//manager/text/deploy?path=/myweb-app'
+      run: curl -v -u admin:admin123 -T /home/runner/work/jomacs-webapps/jomacs-webapps/target/web-app.war 'http://ec2-34-205-62-184.compute-1.amazonaws.com:8080//manager/text/deploy?path=/myweb-app'
     
             
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
