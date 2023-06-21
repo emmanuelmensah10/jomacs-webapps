@@ -29,11 +29,10 @@ jobs:
         cache: maven
     - name: Grant file permission
       run: chmod +x pom.xml
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v6
-    - name: Build & push Docker image
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
       with:
-        image: snana/maven-app
+        image: repo/image
         tags: v1, latest
         registry: registry-url.io
         dockerfile: Dockerfile.ci
