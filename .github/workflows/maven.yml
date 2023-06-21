@@ -29,13 +29,9 @@ jobs:
         cache: maven
     - name: Grant file permission
       run: chmod +x pom.xml
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v4
-      with:
-        image: snana/maven-app
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Maven Build
+      run: mvn -B package --file pom.xml
+    
             
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph.
