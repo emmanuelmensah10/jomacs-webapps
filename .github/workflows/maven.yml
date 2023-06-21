@@ -27,8 +27,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    -name: Grant file permission
-      run: chmod +x pom.xml
+    - name: Grant file permission
+      run: chomod +x pom.xml
     - name: Build with Maven
       run: mvn -B test package --file pom.xml
             
